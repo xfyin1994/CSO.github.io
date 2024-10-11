@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Deformable Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
+  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSO: Constraint-Guided Space Optimization for Active Scene Mapping</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <!-- mathjax是一个开源的web数学公式渲染器，由JS编写而成，可用于渲染符合LaTeX、MathML，AsciMath等规则的数学表达式。 -->
+  <!-- <meta charset="utf-8"> -->
+  <script>
+    MathJax = {
+        tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://xfyin1994.github.io/yinxuefeng.github.io/">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <!-- 
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+       -->
+    </div>
+
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">CSO: Constraint-Guided Space Optimization for Active Scene Mapping</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="">Xuefeng Yin</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.zhuchenyang.net/">Chenyang Zhu</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Shanglai Qu</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Yuqi Li</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://kevinkaixu.net/">Kai Xu</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Baocai Yin</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://faculty.dlut.edu.cn/yangxin/zh_CN/index.htm">Xin Yang</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Dalian University of Technology,</span>
+            <span class="author-block"><sup>2</sup>National University of Defense Technology,</span>
+            <span class="author-block"><sup>3</sup>Ningbo University</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="./static/ACMMM2024_CSO_20240901_camera_ready_submit.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="./static/ACMMM2024_CSO_20240901_camera_ready_submit_supp.pdf"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="ai ai-arxiv"></i>
+                </span>
+                <span>Supplementary</span>
+              </a>
+            </span>
+            <!-- 
+            <span class="link-block">
+              <a href="https://arxiv.org/abs/2011.12948"
+              class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <i class="ai ai-arxiv"></i>
+              </span>
+              <span>arXiv</span>
+            </a>
+          </span>
+               -->
+              <!-- Video Link. -->
+               <!-- 
+                <span class="link-block">
+                  <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+              -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Coming soon)</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->‘
+              <!-- 
+              <span class="link-block">
+                <a href="https://github.com/google/nerfies/releases/tag/0.1"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="far fa-images"></i>
+                </span>
+                <span>Data</span>
+              </a>
+            </span>
+              -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+      <!-- <div class="column"> -->
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Simultaneously mapping and exploring a complex unknown scene is an NP-hard problem, which is still challenging with the rapid development of deep learning techniques. We present CSO, a deep reinforcement learning-based framework for efficient active scene mapping. Constraint-guided space optimization is adopted for both state and critic space to reduce the difficulty of finding the global optimal explore path and avoid long-distance round trips while exploring. We first take the frontiers-based entropy as the input constraint with the raw observation into the network, which guides the training start from imitating the local greedy searching. However, the entropy-based optimization can easily get stuck with few local optimal or cause inefficient round trips since the entropy space and the real world do not share the same metric. Inspired by constrained reinforcement learning, we then introduce an action mask-based optimization constraint to align the metric of these two spaces. Exploration optimization in aligned spaces can avoid long-distance round trips more effectively. We evaluate our method with a ground robot in 29 complex indoor scenes with different scales. Our method can perform $19.16\%$ more exploration efficiency and $3.12\%$ more exploration completeness on average compared to the state-of-the-art alternatives. We also implement our method in real-world scenes that can efficiently explore an area of 649 $m^2$. 
+            <!-- The experiment video can be found in the supplementary material. -->
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+
+
+    <!-- Pipeline. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <!-- <h2 class="title is-4 has-text-centered">The Overview of CSO for Active Scene Mapping</h2> -->
+        <!-- interpolation-panel背景灰色 -->
+        <div class="column has-text-justified">
+          <img src="./static/images/pipeline_tcvg_v7_acmmm2024.png" class="interpolation-image" alt="Interpolate start reference image."/>
+          The Overview of CSO for Active Scene Mapping. 
+          The robot first uses the Mapping Module to construct an Exploration Map based on the Observations $C(\omega_t)$, and uses Information Aggregation to compute the frontiers-based entropy $I(M_t)$ of each frontier. Then the State Generator generates the state input $s(\omega_t)$ for the Global Policy. At the global planning stage, the Graph Neural Network-based encoder is used for feature fusion and extraction. Based on the sampling probabilities of frontiers output by the actor network, the Action Mask Guided Space Alignment filters unreasonable frontiers and guides the critic value space to align with the geodesic distance space. Once a frontier is selected as the long-term goal, the Local Policy drives the robot to reach this goal and update the Exploration Map based on new observations $C(\omega_{t+1})$. This planning cycle is iteratively implemented until the termination criteria are triggered.
+        </div>
+      </div>
+    </div>
+    <!-- Pipeline. -->
+
+
+    <!-- Teaser -->
+    <!-- <h2 class="title is-4">Space Alignment for Avoiding Long-Distance Round Trips</h2> -->
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <img id="teaser" src="./static/images/teaser_v8.jpg" class="interpolation-image" alt="Interpolate start reference image."/>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="columns is-centered">
+          <div class="column content has-text-justified">
+            <p>
+              Illustration of space alignment for avoiding long-distance round trips. We employ Multidimensional Scaling (MDS) to visualize the metrics of different spaces in (1), (2), and (3), where points A, B, C, and D represent the robot's position, the optimal position, a position with higher frontier entropy, and a position farther from the robot, respectively. When two metric spaces are aligned, the distances between any two points in these spaces should be similar or exhibit proportional scaling. As shown in (4), we select $B_i, C_i, D_i$ from spaces (1), (2), (3) to construct 3 triangles $\bigtriangleup B_iC_iD_i, i={1,2,3}$ individually. It is evident that $\frac{B_2C_2}{B_3C_3} \approx \frac{C_2D_2}{C_3D_3} \approx \frac{B_2D_2}{B_3D_3}$, yet $\frac{B_1C_1}{B_2C_2} \not\approx \frac{C_1D_1}{C_2D_2} \not\approx \frac{B_1D_1}{B_2D_2}$, which suggests that space (3) aligns with (2) but not with (1). The final result is depicted in (c), the robot prefers the closer point $B$ with lower entropy instead of the farther point $C$ with higher entropy, thus avoiding long-distance round trips(orange dashed path, $A \rightarrow C \rightarrow B$) and follow a more rational path (green solid path, $A \rightarrow B \rightarrow C$).
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- Teaser -->
+    
+   
+  </div>
+</section>
+
+
+
+
+
+<!-- Teaser 上下排版 -->
+ <!-- 
+  <section class="section">
+    <div class="container is-max-desktop">
+      
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <img id="teaser" src="./static/images/teaser_v8.jpg" class="interpolation-image" alt="Interpolate start reference image."/>
+        </div>
+      </div>
+      
+      <div class="content has-text-justified">
+        Illustration of space alignment for avoiding long-distance round trips. We employ Multidimensional Scaling (MDS) to visualize the metrics of different spaces in (1), (2), and (3), where points A, B, C, and D represent the robot's position, the optimal position, a position with higher frontier entropy, and a position farther from the robot, respectively. When two metric spaces are aligned, the distances between any two points in these spaces should be similar or exhibit proportional scaling. As shown in (4), we select $B_i, C_i, D_i$ from spaces (1), (2), (3) to construct 3 triangles $\bigtriangleup B_iC_iD_i, i={1,2,3}$ individually. It is evident that $\frac{B_2C_2}{B_3C_3} \approx \frac{C_2D_2}{C_3D_3} \approx \frac{B_2D_2}{B_3D_3}$, yet $\frac{B_1C_1}{B_2C_2} \not\approx \frac{C_1D_1}{C_2D_2} \not\approx \frac{B_1D_1}{B_2D_2}$, which suggests that space (3) aligns with (2) but not with (1). The final result is depicted in (c), the robot prefers the closer point $B$ with lower entropy instead of the farther point $C$ with higher entropy, thus avoiding long-distance round trips(orange dashed path, $A \rightarrow C \rightarrow B$) and follow a more rational path (green solid path, $A \rightarrow B \rightarrow C$).
+      </div>
+    </div>
+  </section>
+  -->
+<!-- Teaser 上下排版 -->
+
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    
+    <!-- Results. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-4 has-text-centered">Results</h2>
+        
+        <div class="content has-text-centered">
+          <img src="./static/images/results_tvcg_640_3_acmmm2024.png" class="interpolation-image" alt="Interpolate start reference image."/>
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            Visual comparisons of our method with alternatives in 8 Matterport3D scenes, where red lines indicate the robot's exploration trajectories, gray areas are ground truth maps, light blue areas denote the explored regions, and green areas represent obstacles. We also encircle unreasonable exploration trajectories with dashed blue circles.
+          </p>
+        </div>
+        
+        <div class="content has-text-centered">
+          <img src="./static/images/exp_curves_v4_acmmm2024.png" class="interpolation-image" alt="Interpolate start reference image."/>
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            We also compared the coverage curves over global steps in the corresponding 8 scenes with different scales. The closer the curve is to the upper left corner, the corresponding method can explore a larger area over the same time, indicating a more efficient exploration. It is obvious that our method(solid) is closer to the upper left than others(dashed).
+          </p>
+        </div>
+        
+        
+        <div class="content has-text-centered is-four-fifths">
+          Comparison with alternatives on the Matterport3D dataset.
+          <img src="./static/images/table1.png" class="interpolation-image" alt="Interpolate start reference image." width="85%"/>
+        </div>
+
+
+        <div class="content has-text-centered">
+          <img src="./static/images/histogram_v4_acmmm2024.png" class="interpolation-image" alt="Interpolate start reference image."/>
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            Comparison of exploration efficiency (left) and efficiency relative deviation (right) for each method across different scene scales. As the scene scale increases, the superiority of our method(red) becomes more and more obvious.
+          </p>
+        </div>
+
+      </div>
+    </div>
+    <!-- Results. -->
+
+
+
+    <!-- Real-World Experiments. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-4 has-text-centered">Real-World Experiments</h2>
+        <div class="content has-text-justified">
+          <p>
+            In addition to simulated environments, we test our method in the real world. For experiments in the real world, we deploy the LIMO robot equipped with an ORBBEC Dabai Depth Camera and an EAI YDLIDAR X2L $360^{\circ}$ 2D laser range lidar sensor to explore 3 distinct real-world scenes. These scenes consist of 2 large scenes (a) and (b), alongside a super large scene (c), where (a) is composed of laboratories and corridors, (b) is a supermarket, and (c) is part of the student innovation and practice center. 
+          </p>
+        </div>
+        
+        <div class="content has-text-centered">
+          <img src="./static/images/real_world_x3_merge_hor_acmmm2024.png" class="interpolation-image" alt="Interpolate start reference image."/>
+        </div>
+        
+        <div class="content has-text-justified">
+          <p>
+            <!-- We leverage the gmapping algorithm~\cite{grisetti2007improved}, a particle filtering-based laser SLAM algorithm, to generate the robot's exploration map in the real world based on LiDAR and Odometry data. Simultaneously, we employ the ACML~\cite{arslan2016voronoi}, an adaptive Monte Carlo localization algorithm to estimate the robot's pose while exploring accurately.  -->
+            We leverage the gmapping algorithm, a particle filtering-based laser SLAM algorithm, to generate the robot's exploration map in the real world based on LiDAR and Odometry data. Simultaneously, we employ the ACML, an adaptive Monte Carlo localization algorithm to estimate the robot's pose while exploring accurately. 
+
+            <!-- More details of the real-world experiments can be found in this video. -->
+          </p>
+        </div>
+        
+        <div class="content has-text-centered">
+          <video id="replay-video" controls muted preload playsinline width="85%">
+            <source src=".\static\videos\CSO_supp_v2_Compress_online.mp4" type="video/mp4">
+          </video>
+        </div>
+
+      </div>
+    </div>
+    <!-- Real-World Experiments. -->
+
+
+
+    <!-- Concurrent Work. -->
+    <!-- 
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            There's a lot of excellent work that was introduced around the same time as ours.
+          </p>
+          <p>
+            <a href="https://arxiv.org/abs/2104.09125">Progressive Encoding for Neural Optimization</a> introduces an idea similar to our windowed position encoding for coarse-to-fine optimization.
+          </p>
+          <p>
+            <a href="https://www.albertpumarola.com/research/D-NeRF/index.html">D-NeRF</a> and <a href="https://gvv.mpi-inf.mpg.de/projects/nonrigid_nerf/">NR-NeRF</a>
+            both use deformation fields to model non-rigid scenes.
+          </p>
+          <p>
+            Some works model videos with a NeRF by directly modulating the density, such as <a href="https://video-nerf.github.io/">Video-NeRF</a>, <a href="https://www.cs.cornell.edu/~zl548/NSFF/">NSFF</a>, and <a href="https://neural-3d-video.github.io/">DyNeRF</a>
+          </p>
+          <p>
+            There are probably many more by the time you are reading this. Check out <a href="https://dellaert.github.io/NeRF/">Frank Dellart's survey on recent NeRF papers</a>, and <a href="https://github.com/yenchenlin/awesome-NeRF">Yen-Chen Lin's curated list of NeRF papers</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+     -->
+    <!--/ Concurrent Work. -->
+
+  </div>
+</section>
+
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{yin2024CSO,
+        author    = {Xuefeng Yin, Chenyang Zhu, Shanglai Qu, Yuqi Li, Kai Xu, Baocai Yin, Xin Yang},
+        title     = {CSO: Constraint-Guided Space Optimization for Active Scene Mapping},
+        journal   = {ACM Multimedia},
+        year      = {2024},
+      }</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link" href="./static/ACMMM2024_CSO_20240901_camera_ready_submit.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="#" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website, we just ask that you link back to this page in the footer. Please remember to remove the analytics code included in the header of the website which you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
